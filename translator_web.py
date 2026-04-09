@@ -54,7 +54,13 @@ with col1:
         else:
             try:
                 genai.configure(api_key=api_key)
-                model = genai.GenerativeModel(model_name=model_name, system_instruction=user_instruction)
+                model = genai.GenerativeModel(model_name=model_name, system_instruction=user_instruction,
+                                              generation_config= {
+                    "temperature": 0.8, # 0.8 က ဝတ္ထုအတွက် အကောင်းဆုံးပါ
+                    "top_p": 0.95,
+                    "top_k": 64,
+                    "max_output_tokens": 8192,
+                }) 
                 with st.spinner("ဘာသာပြန်နေပါသည်..."):
                     response = model.generate_content(input_text)
                     st.session_state.result = response.text
